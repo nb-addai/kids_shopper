@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Little Cart Co. — Personal Shopping for Kids</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FDF6EC;
+      --warm-white: #FFFAF4;
+      --peach: #F5A97F;
+      --peach-light: #FAD5BC;
+      --sage: #7BAE8E;
+      --sage-light: #C5DEC9;
+      --navy: #1E2D40;
+      --navy-mid: #2E4560;
+      --gold: #D4A04A;
+      --gold-light: #F0D9A8;
+      --blush: #EDAABB;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(253, 246, 236, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--peach-light);
+    }
+
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--peach); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: var(--navy-mid);
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--peach); }
+
+    .nav-cta {
+      background: var(--navy);
+      color: var(--cream) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 100px;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--peach) !important; color: white !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--peach-light) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, var(--sage-light) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--gold-light);
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge::before { content: '✦'; }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--navy);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--peach);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--navy-mid);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--cream);
+      padding: 0.9rem 2rem;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: var(--peach); transform: translateY(-2px); }
+
+    .btn-secondary {
+      color: var(--navy);
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s;
+    }
+
+    .btn-secondary:hover { gap: 0.7rem; }
+
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeUp 0.9s 0.2s ease both;
+    }
+
+    .hero-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 2.5rem;
+      box-shadow: 0 20px 60px rgba(30,45,64,0.12);
+      width: 360px;
+      position: relative;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -12px; right: -12px;
+      width: 100%; height: 100%;
+      background: var(--peach);
+      border-radius: 2rem;
+      z-index: -1;
+    }
+
+    .card-tag {
+      display: inline-block;
+      background: var(--sage-light);
+      color: var(--sage);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--navy);
+    }
+
+    .card-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-items li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--navy-mid);
+    }
+
+    .item-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .item-icon.blue { background: #DBEAFE; }
+    .item-icon.pink { background: #FCE7F3; }
+    .item-icon.green { background: #D1FAE5; }
+    .item-icon.yellow { background: #FEF3C7; }
+
+    .card-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--cream);
+    }
+
+    .card-total span:first-child { font-size: 0.85rem; color: #888; }
+    .card-total span:last-child {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .floating-tag {
+      position: absolute;
+      background: white;
+      border-radius: 1rem;
+      padding: 0.6rem 1rem;
+      box-shadow: 0 8px 24px rgba(30,45,64,0.1);
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .float-1 { top: -20px; right: 20px; animation-delay: 0s; }
+    .float-2 { bottom: 10px; left: -40px; animation-delay: 1.5s; }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: var(--navy);
+      color: var(--cream);
+      padding: 1rem 4rem;
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+
+    .trust-item span:first-child { font-size: 1.1rem; }
+
+    /* ── HOW IT WORKS ── */
+    section { padding: 6rem 4rem; }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      max-width: 600px;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--navy-mid);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 3.5rem;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+
+    .step {
+      position: relative;
+      padding: 2rem;
+      background: white;
+      border-radius: 1.5rem;
+      border: 1px solid var(--peach-light);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .step:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(30,45,64,0.1); }
+
+    .step-number {
+      font-family: 'Fraunces', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--peach-light);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .step-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .step h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--navy);
+    }
+
+    .step p { font-size: 0.9rem; line-height: 1.6; color: var(--navy-mid); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--warm-white); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      border: 1px solid var(--peach-light);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .service-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(30,45,64,0.1); }
+
+    .service-top {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+    }
+
+    .service-body { padding: 1.5rem; }
+
+    .service-body h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--navy);
+    }
+
+    .service-body p { font-size: 0.88rem; line-height: 1.6; color: var(--navy-mid); margin-bottom: 1rem; }
+
+    .service-price {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--peach);
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .testimonial {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      border: 1px solid var(--sage-light);
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: '"';
+      font-family: 'Fraunces', serif;
+      font-size: 5rem;
+      color: var(--sage-light);
+      position: absolute;
+      top: 0.5rem; left: 1.5rem;
+      line-height: 1;
+    }
+
+    .testimonial p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--navy-mid);
+      margin-bottom: 1.5rem;
+      padding-top: 2rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .testimonial-author strong { display: block; font-size: 0.9rem; color: var(--navy); }
+    .testimonial-author span { font-size: 0.8rem; color: #888; }
+
+    .stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 0.25rem; }
+
+    /* ── CTA ── */
+    #contact {
+      background: var(--navy);
+      color: var(--cream);
+      text-align: center;
+    }
+
+    #contact .section-label { color: var(--peach); }
+
+    #contact .section-title { color: var(--cream); margin: 0 auto 1rem; }
+
+    #contact .section-sub { color: rgba(253,246,236,0.7); margin: 0 auto 2.5rem; }
+
+    .contact-form {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row { display: flex; gap: 1rem; }
+
+    .contact-form input,
+    .contact-form textarea,
+    .contact-form select {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(253,246,236,0.4); }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus,
+    .contact-form select:focus { border-color: var(--peach); }
+
+    .contact-form select option { background: var(--navy); }
+
+    .contact-form textarea { resize: vertical; min-height: 100px; }
+
+    .contact-form button {
+      background: var(--peach);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      padding: 1rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .contact-form button:hover { background: #e8895a; transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #141E2B;
+      color: rgba(253,246,236,0.5);
+      text-align: center;
+      padding: 2rem 4rem;
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--peach); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { display: none; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 7rem 1.5rem 3rem;
+        text-align: center;
+      }
+
+      .hero-sub, .hero-actions { margin: 0 auto 2rem; justify-content: center; }
+
+      .hero-visual { margin-top: 3rem; }
+
+      section { padding: 4rem 1.5rem; }
+      .trust-bar { padding: 1rem 1.5rem; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Little<span>Cart</span> Co.</div>
+  <ul>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact" class="nav-cta">Book a Session</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">Professional Kids' Shopper</div>
+    <h1>Shopping made <em>joyful</em> for your little ones.</h1>
+    <p class="hero-sub">I curate age-appropriate, on-trend finds for kids — from back-to-school wardrobes to birthday gifts — so you can spend less time shopping and more time with them.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a free consult ✦</a>
+      <a href="#services" class="btn-secondary">See packages →</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="floating-tag float-1">🌟 Trending this season</div>
+      <div class="floating-tag float-2">✅ 4.9 · 120+ happy families</div>
+      <div class="card-tag">Sample Haul · Ages 4–7</div>
+      <div class="card-title">Back-to-School Bundle</div>
+      <ul class="card-items">
+        <li>
+          <div class="item-icon blue">🎒</div>
+          <span>Ergonomic backpack set</span>
+        </li>
+        <li>
+          <div class="item-icon pink">👟</div>
+          <span>3 pairs of school shoes</span>
+        </li>
+        <li>
+          <div class="item-icon green">📚</div>
+          <span>Supplies & stationery kit</span>
+        </li>
+        <li>
+          <div class="item-icon yellow">🧥</div>
+          <span>2 seasonal outfits</span>
+        </li>
+      </ul>
+      <div class="card-total">
+        <span>Curated in 24 hrs</span>
+        <span>From $149</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span>⭐</span><span>4.9 average rating</span></div>
+  <div class="trust-item"><span>👧</span><span>Ages 0–16 covered</span></div>
+  <div class="trust-item"><span>📦</span><span>In-store & online options</span></div>
+  <div class="trust-item"><span>💳</span><span>Budget-friendly plans</span></div>
+  <div class="trust-item"><span>🔄</span><span>Easy returns handled</span></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section-label">The Process</div>
+  <div class="section-title">From wishlist to doorstep, stress-free.</div>
+  <p class="section-sub">I handle everything — from understanding your child's style and needs to tracking down the best deals and making sure everything fits just right.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">01</div>
+      <div class="step-icon">☎️</div>
+      <h3>Free Consultation</h3>
+      <p>We chat about your child's personality, sizes, style preferences, upcoming events, and your budget. No commitment needed.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">02</div>
+      <div class="step-icon">🛍️</div>
+      <h3>I Do the Shopping</h3>
+      <p>I source items from top stores and hidden gems — in-person or online — curating a selection tailored specifically to your child.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">03</div>
+      <div class="step-icon">📋</div>
+      <h3>Review & Approve</h3>
+      <p>You get a detailed look book with options, prices, and my notes. You pick what you love; I handle the rest.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">04</div>
+      <div class="step-icon">🎁</div>
+      <h3>Delivery & Done</h3>
+      <p>Items arrive at your door (or mine for pickup). Anything that doesn't fit? I manage returns and exchanges so you don't have to.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">Services & Pricing</div>
+  <div class="section-title">A package for every family.</div>
+  <p class="section-sub">Whether you need a single outfit or a full seasonal wardrobe refresh, there's a plan that fits.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-top" style="background: #FEF3C7;">🎀</div>
+      <div class="service-body">
+        <h3>The Gift Finder</h3>
+        <p>Perfect for busy parents, grandparents, or godparents. I'll find a thoughtful, age-appropriate gift for any occasion — birthday, holiday, or milestone.</p>
+        <div class="service-price">From $49</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-top" style="background: #FCE7F3;">👗</div>
+      <div class="service-body">
+        <h3>Outfit Curation</h3>
+        <p>Need a special occasion look or a week's worth of school outfits? I'll pull together polished, mix-and-match pieces your child will actually want to wear.</p>
+        <div class="service-price">From $99</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-top" style="background: #DBEAFE;">🎒</div>
+      <div class="service-body">
+        <h3>Seasonal Wardrobe</h3>
+        <p>A full seasonal refresh — clothing, shoes, and accessories for your child from head to toe. I'll account for growth spurts and your budget.</p>
+        <div class="service-price">From $249</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-top" style="background: #D1FAE5;">🏡</div>
+      <div class="service-body">
+        <h3>Kids' Room Essentials</h3>
+        <p>Décor, bedding, storage, and playroom finds curated to match your child's personality and your home's aesthetic.</p>
+        <div class="service-price">From $179</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-top" style="background: #EDE9FE;">🌟</div>
+      <div class="service-body">
+        <h3>VIP Annual Plan</h3>
+        <p>Year-round access. I shop every season, handle holidays, birthdays, and back-to-school. Think of me as your family's personal shopping concierge.</p>
+        <div class="service-price">From $999 / year</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-top" style="background: #FEE2E2;">🤝</div>
+      <div class="service-body">
+        <h3>In-Store Experience</h3>
+        <p>Prefer trying things on? I'll join you (or take your child) on a guided shopping trip, managing the experience start to finish.</p>
+        <div class="service-price">From $129 / 2 hrs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-label">What Parents Say</div>
+  <div class="section-title">Real families, real results.</div>
+  <p class="section-sub">Shopping for kids can feel overwhelming. Here's what happened when families handed it off to me.</p>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>I have three kids under 8 and back-to-school shopping was my annual nightmare. She sent over a full look book within a day and my kids were obsessed with everything she picked. Will absolutely book again.</p>
+      <div class="testimonial-author">
+        <div class="avatar" style="background: #FEF3C7;">🌸</div>
+        <div>
+          <strong>Maria T.</strong>
+          <span>Mom of 3 · Fayetteville, AR</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>I was flying in for my niece's birthday and had no idea what to get a 6-year-old. Within 48 hours I had the most thoughtful, perfectly wrapped gift ready for pickup. She cried happy tears. So did I.</p>
+      <div class="testimonial-author">
+        <div class="avatar" style="background: #D1FAE5;">🎁</div>
+        <div>
+          <strong>Derek L.</strong>
+          <span>Uncle · Chicago, IL</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>My son is really particular about what he wears — sensory stuff. She understood completely without me having to over-explain and found pieces he actually reaches for every morning. That's huge for us.</p>
+      <div class="testimonial-author">
+        <div class="avatar" style="background: #FCE7F3;">💙</div>
+        <div>
+          <strong>James & Priya K.</strong>
+          <span>Parents · Bentonville, AR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / CTA -->
+<section id="contact">
+  <div class="section-label">Get Started</div>
+  <div class="section-title">Let's find the perfect haul.</div>
+  <p class="section-sub">Tell me a little about your child and what you're looking for. First consultation is completely free.</p>
+  <div class="contact-form">
+    <div class="form-row">
+      <input type="text" placeholder="Your name" />
+      <input type="email" placeholder="Email address" />
+    </div>
+    <select>
+      <option value="" disabled selected>What are you shopping for?</option>
+      <option>Gift for a child</option>
+      <option>Seasonal wardrobe</option>
+      <option>Special occasion outfit</option>
+      <option>Kids' room refresh</option>
+      <option>VIP annual plan</option>
+      <option>Something else</option>
+    </select>
+    <input type="text" placeholder="Child's age(s)" />
+    <textarea placeholder="Tell me more — budget, style, any special needs or preferences..."></textarea>
+    <button type="button">Send my request ✦</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 LittleCart Co. · Northwest Arkansas · <a href="mailto:hello@littlecart.co">hello@littlecart.co</a> · Made with ♥ for busy families</p>
+</footer>
+
+</body>
+</html>
